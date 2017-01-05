@@ -166,6 +166,9 @@ class Device(SNSCRUDMixin, models.Model):
     class Meta:
         unique_together = (('device_id', 'platform'))
 
+    def __str__(self):
+        return "{0} ({1})".format(self.device_id, self.platform)
+
     @property
     def resource_name(self):
         return 'PlatformEndpoint'
