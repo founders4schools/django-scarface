@@ -2,7 +2,7 @@
 import inspect
 from functools import partial
 
-from boto import sns
+import boto3
 from django.conf import settings
 
 __author__ = 'dreipol GmbH'
@@ -67,10 +67,11 @@ def get_sns_connection():
 
     region = settings.SCARFACE_REGION_NAME if hasattr(settings, "SCARFACE_REGION_NAME") else 'eu-west-1'
 
-    return sns.connect_to_region(
-        region, aws_access_key_id=settings.AWS_ACCESS_KEY,
-        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
-    )
+    return boto3.client('sns',
+                        region,
+                        aws_access_key_id=settings.AWS_ACCESS_KEY,
+                        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
+                       )
 
 
 def logging_enabled():

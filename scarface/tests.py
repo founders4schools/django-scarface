@@ -7,7 +7,7 @@ Replace this with more appropriate tests for your application.
 import unittest
 from unittest.mock import Mock
 
-from boto.exception import BotoServerError
+from botocore.exceptions import ClientError
 from django.test import TestCase
 from scarface.exceptions import PlatformNotSupported
 from scarface.platform_strategy import get_strategies, PlatformStrategy
@@ -541,7 +541,7 @@ class TopicTestCase(BaseTestCase):
 
         try:
             topic.deregister_device(device, connection)
-        except BotoServerError as e:
+        except ClientError as e:
             pass
 
         connection.unsubscribe.assert_called_once_with(
