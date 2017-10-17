@@ -13,9 +13,9 @@ from scarface.exceptions import PlatformNotSupported
 from scarface.platform_strategy import get_strategies, PlatformStrategy
 from scarface.settings import SCARFACE_DEFAULT_PLATFORM_STRATEGIES
 from scarface.signals import instance_deleted
-from .models import Application, Platform, Topic, Device, Subscription, \
+from scarface.models import Application, Platform, Topic, Device, Subscription, \
     PushMessage
-from .utils import DefaultConnection
+from scarface.utils import DefaultConnection
 
 TEST_ARN_TOKEN = 'test_arn_token'
 TEST_PUSH_TOKEN = 'test_push_token'
@@ -168,9 +168,9 @@ class PlatformTestCase(BaseTestCase):
 
         self.assertEqual(TEST_ARN_TOKEN_PLATFORM, platform.arn)
         connection.create_platform_application.assert_called_once_with(
-                "{0}_{1}".format(application.name, PLATFORM).lower(),
-                PLATFORM,
-                {
+                Name="{0}_{1}".format(application.name, PLATFORM).lower(),
+                Platform=PLATFORM,
+                Attributes={
                     'PlatformCredential': TEST_CREDENTIAL,
                     'PlatformPrincipal': TEST_PRINCIPAL
                 }
@@ -199,9 +199,9 @@ class PlatformTestCase(BaseTestCase):
 
         self.assertEqual(TEST_ARN_TOKEN_PLATFORM, platform.arn)
         connection.create_platform_application.assert_called_once_with(
-                "{0}_{1}".format(application.name, PLATFORM).lower(),
-                PLATFORM,
-                {
+                Name="{0}_{1}".format(application.name, PLATFORM).lower(),
+                Platform=PLATFORM,
+                Attributes={
                     'PlatformCredential': TEST_CREDENTIAL,
                     'PlatformPrincipal': None
                 }
@@ -321,9 +321,9 @@ class DeviceTestCase(BaseTestCase):
         device.register(connection=connection)
 
         connection.create_platform_endpoint.assert_called_once_with(
-                TEST_ARN_TOKEN_APNS,
-                TEST_PUSH_TOKEN,
-                custom_user_data="",
+                PlatformApplicationArn=TEST_ARN_TOKEN_APNS,
+                Token=TEST_PUSH_TOKEN,
+                CustomUserData="",
         )
         self.assertEqual(device.arn, TEST_ARN_TOKEN_IOS_DEVICE)
         self.assertTrue(device.is_registered)
@@ -350,9 +350,9 @@ class DeviceTestCase(BaseTestCase):
         device.register(connection=connection)
 
         connection.create_platform_endpoint.assert_called_once_with(
-                TEST_ARN_TOKEN_GCM,
-                TEST_PUSH_TOKEN,
-                custom_user_data="",
+                PlatformApplicationArn=TEST_ARN_TOKEN_GCM,
+                Token=TEST_PUSH_TOKEN,
+                CustomUserData="",
         )
         self.assertEqual(device.arn, TEST_ARN_TOKEN_ANDROID_DEVICE)
         self.assertTrue(device.is_registered)

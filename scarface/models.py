@@ -64,8 +64,7 @@ class SNSCRUDMixin(object):
         """
         success = False
         try:
-            self.arn = response_dict[self.response_key][self.result_key][
-                self.arn_key]
+            self.arn = response_dict[self.arn_key]
             success = True
         except KeyError:
             pass
@@ -185,9 +184,9 @@ class Device(SNSCRUDMixin, models.Model):
         '''
         self.platform.is_registered_or_register()
         response = connection.create_platform_endpoint(
-            self.platform.arn,
-            self.push_token,
-            custom_user_data=custom_user_data
+            PlatformApplicationArn=self.platform.arn,
+            Token=self.push_token,
+            CustomUserData=custom_user_data
         )
         success = self.set_arn_from_response(response)
         if not success:
@@ -239,7 +238,7 @@ class Device(SNSCRUDMixin, models.Model):
         """
         if not self.is_registered:
             raise NotRegisteredException()
-        success = connection.delete_endpoint(self.arn)
+        success = connection.delete_endpoint(EndpointArn=self.arn)
         if not success:
             SNSException(
                 'Failed to deregister device.({0})'.format(success)
@@ -336,6 +335,10 @@ class Platform(SNSCRUDMixin, models.Model):
     @property
     def app_name(self):
         return self.application.name
+    
+    @property
+    def arn_key(self):
+        return u'PlatformApplicationArn'
 
     @property
     def strategy(self):
@@ -396,9 +399,9 @@ class Platform(SNSCRUDMixin, models.Model):
         """
 
         response = connection.create_platform_application(
-            self.name,
-            self.platform,
-            self.attributes
+            Name=self.name,
+            Platform=self.platform,
+            Attributes=self.attributes
         )
         if not response:
             raise SNSException(
