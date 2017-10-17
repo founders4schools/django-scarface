@@ -268,9 +268,9 @@ class Device(SNSCRUDMixin, models.Model):
         push_message = self.platform.format_payload(push_message)
         json_string = json.dumps(push_message)
         return connection.publish(
-            message=json_string,
-            target_arn=self.arn,
-            message_structure="json"
+            Message=json_string,
+            TargetArn=self.arn,
+            MessageStructure="json"
         )
 
     @DefaultConnection
