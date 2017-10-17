@@ -502,7 +502,7 @@ class Topic(SNSCRUDMixin, models.Model):
     @DefaultConnection
     def register(self, connection=None):
 
-        response = connection.create_topic(self.full_name)
+        response = connection.create_topic(Name=self.full_name)
         if not response:
             raise SNSException(
                 'Failed to register Topic. ({0})'.format(response)
