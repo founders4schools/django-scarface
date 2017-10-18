@@ -673,7 +673,7 @@ class Subscription(SNSCRUDMixin, models.Model):
         self.device.is_registered_or_register()
         self.topic.is_registered_or_register()
         success = connection.subscribe(
-            Topic=self.topic.arn,
+            TopicArn=self.topic.arn,
             Endpoint=self.device.arn,
             Protocol="application"
         )
