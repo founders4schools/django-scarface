@@ -568,7 +568,7 @@ class Topic(SNSCRUDMixin, models.Model):
 
         def get_next(nexttoken):
             response = connection.list_subscriptions_by_topic(
-                Topic=self.arn, NextToken=nexttoken)
+                TopicArn=self.arn, NextToken=nexttoken)
             result = response["ListSubscriptionsByTopicResponse"][
                 "ListSubscriptionsByTopicResult"]
             subs = result[u'Subscriptions']
@@ -604,7 +604,7 @@ class Topic(SNSCRUDMixin, models.Model):
         json_string = json.dumps(payload)
         return connection.publish(
             Message=json_string,
-            Topic=self.arn,
+            TopicArn=self.arn,
             MessageStructure="json"
         )
 
