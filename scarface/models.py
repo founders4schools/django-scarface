@@ -285,7 +285,7 @@ class Device(SNSCRUDMixin, models.Model):
             raise NotRegisteredException
 
         new_token = new_token if new_token else self.push_token
-        attributes = {"Enabled": True, "Token": new_token}
+        attributes = {"Enabled": 'true', "Token": new_token}
         if custom_user_data:
             attributes["CustomUserData"] = custom_user_data
         answer = connection.set_endpoint_attributes(EndpointArn=self.arn, Attributes=attributes)
