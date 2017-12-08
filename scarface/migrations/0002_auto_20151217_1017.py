@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
+import django.db.models.deletion
 import scarface.models
 
 
@@ -37,7 +38,7 @@ class Migration(migrations.Migration):
                 ('arn', models.CharField(null=True, max_length=255, blank=True)),
                 ('credential', models.CharField(null=True, max_length=255, blank=True)),
                 ('principal', models.CharField(null=True, max_length=255, blank=True)),
-                ('application', models.ForeignKey(to='scarface.Application', related_name='platforms')),
+                ('application', models.ForeignKey(to='scarface.Application', related_name='platforms', on_delete=django.db.models.deletion.CASCADE)),
             ],
             bases=(scarface.models.SNSCRUDMixin, models.Model),
         ),
@@ -46,7 +47,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
                 ('arn', models.CharField(null=True, max_length=255, blank=True)),
-                ('device', models.ForeignKey(to='scarface.Device')),
+                ('device', models.ForeignKey(to='scarface.Device', on_delete=django.db.models.deletion.CASCADE)),
             ],
             bases=(scarface.models.SNSCRUDMixin, models.Model),
         ),
@@ -56,7 +57,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
                 ('name', models.CharField(max_length=64)),
                 ('arn', models.CharField(null=True, max_length=255, blank=True)),
-                ('application', models.ForeignKey(to='scarface.Application', related_name='topics')),
+                ('application', models.ForeignKey(to='scarface.Application', related_name='topics', on_delete=django.db.models.deletion.CASCADE)),
                 ('devices', models.ManyToManyField(to='scarface.Device', through='scarface.Subscription')),
             ],
             bases=(scarface.models.SNSCRUDMixin, models.Model),
@@ -79,12 +80,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='subscription',
             name='topic',
-            field=models.ForeignKey(to='scarface.Topic'),
+            field=models.ForeignKey(to='scarface.Topic', on_delete=django.db.models.deletion.CASCADE),
         ),
         migrations.AddField(
             model_name='device',
             name='platform',
-            field=models.ForeignKey(to='scarface.Platform', related_name='devices'),
+            field=models.ForeignKey(to='scarface.Platform', related_name='devices', on_delete=django.db.models.deletion.CASCADE),
         ),
         migrations.AddField(
             model_name='device',

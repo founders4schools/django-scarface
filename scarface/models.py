@@ -145,7 +145,8 @@ class Device(SNSCRUDMixin, models.Model):
 
     platform = models.ForeignKey(
         to='Platform',
-        related_name='devices'
+        related_name='devices',
+        on_delete=models.CASCADE
     )
 
     arn = models.CharField(
@@ -311,7 +312,8 @@ class Platform(SNSCRUDMixin, models.Model):
 
     application = models.ForeignKey(
         to=Application,
-        related_name='platforms'
+        related_name='platforms',
+        on_delete=models.CASCADE
     )
 
     credential = models.CharField(
@@ -476,7 +478,8 @@ class Topic(SNSCRUDMixin, models.Model):
     )
     application = models.ForeignKey(
         to=Application,
-        related_name='topics'
+        related_name='topics',
+        on_delete=models.CASCADE
     )
     arn = models.CharField(
         max_length=255,
